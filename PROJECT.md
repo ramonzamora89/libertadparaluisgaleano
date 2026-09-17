@@ -123,9 +123,9 @@ Revisado el 17/09/2026:
 | Fecha y lugar de detención | 14/09/2026, por la mañana, Orlando (FL) | CPJ, EL PAÍS, France 24, Confidencial, Infobae. Artículo 66 dice Miami. |
 | Centro de detención | «bajo custodia de ICE en Florida» | CPJ (citando a La Prensa) y EL PAÍS dicen Baker (Sanderson). The Guardian dice que el miércoles 16 estaba en Krome (Miami). **Por confirmar.** |
 | Plataforma | «aplicación de transporte» | La mayoría dice Uber; The Guardian dice Lyft. |
-| Entrada a EE. UU. | 21/12/2018 | EL PAÍS (y el DHS). The Guardian dice que huyó «días después» del allanamiento. |
+| Entrada a EE. UU. | 21/12/2018 | EL PAÍS (y el DHS). The Guardian dice que huyó «días después» del allanamiento. Confirmado por un mensaje recibido el 17/09/2026. |
 | Orden de captura | Sin fecha | Las fuentes no coinciden en si fue antes o después de su salida. |
-| Solicitud de asilo | Presentada en 2019 | EL PAÍS e Infobae. Artículo 66 dice «pendiente desde 2018». |
+| Solicitud de asilo | Presentada el 17/06/2019 | La fecha exacta viene de un mensaje recibido el 17/09/2026; **sin fuente publicada que la respalde**. EL PAÍS e Infobae dicen solo «2019»; Artículo 66 dice «pendiente desde 2018». Cae tres días antes del 20/06/2019, fecha hasta la que el DHS dice que tenía autorización de estadía. |
 | Audiencia | 2/10/2026 | CPJ, EL PAÍS, The Guardian, Infobae. |
 | Nacionalidad española (abril de 2026) | **No se publica** | Solo lo dice Artículo 66; sin verificar. |
 | Corresponsal de EFE (2004–2006) | **No se publica** | Solo lo dice France 24, que no se pudo abrir directamente para verificarlo. |
@@ -133,6 +133,7 @@ Revisado el 17/09/2026:
 
 ## Pendientes (TODO)
 
+- [ ] **Confirmar la fecha del asilo (17/06/2019)** con la familia o el abogado, o con un documento (recibo I-589 de USCIS). Hoy el sitio la publica atribuida a «información aportada a esta campaña».
 - [ ] **Foto de Luis** con permiso de uso y crédito, para la portada y las imágenes para compartir. Hoy la portada es solo tipográfica.
 - [ ] **Logo del CPJ:** confirmar si se puede usar. Hoy el CPJ aparece solo como texto con enlace.
 - [ ] **Crédito del pie** («Con el respaldo del CPJ» / «Supported by CPJ»): confirmar la redacción con el CPJ.
