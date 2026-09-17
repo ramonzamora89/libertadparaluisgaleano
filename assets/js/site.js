@@ -79,6 +79,48 @@
     });
   }
 
+  /* ----- Carrusel de logos de aliados ------------------------------------ */
+  function iniciarCarrusel() {
+    var suave = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+    document.querySelectorAll("[data-carrusel]").forEach(function (carrusel) {
+      var pista = carrusel.querySelector("[data-carrusel-pista]");
+      var anterior = carrusel.querySelector("[data-carrusel-anterior]");
+      var siguiente = carrusel.querySelector("[data-carrusel-siguiente]");
+      if (!pista) return;
+
+      function paso() {
+        var item = pista.firstElementChild;
+        if (!item) return pista.clientWidth;
+        var estilo = getComputedStyle(pista);
+        return item.getBoundingClientRect().width + parseFloat(estilo.columnGap || 0);
+      }
+
+      function actualizar() {
+        var max = pista.scrollWidth - pista.clientWidth - 1;
+        var sobra = max > 0;
+        // Con pocos logos no hacen falta las flechas.
+        if (anterior) { anterior.hidden = !sobra; anterior.disabled = pista.scrollLeft <= 0; }
+        if (siguiente) { siguiente.hidden = !sobra; siguiente.disabled = pista.scrollLeft >= max; }
+      }
+
+      if (anterior) {
+        anterior.addEventListener("click", function () {
+          pista.scrollBy({ left: -paso(), behavior: suave });
+        });
+      }
+      if (siguiente) {
+        siguiente.addEventListener("click", function () {
+          pista.scrollBy({ left: paso(), behavior: suave });
+        });
+      }
+
+      pista.addEventListener("scroll", actualizar, { passive: true });
+      window.addEventListener("resize", actualizar);
+      actualizar();
+    });
+  }
+
   /* ----- Botones para copiar mensajes ----------------------------------- */
   function iniciarCopiar() {
     document.querySelectorAll("[data-copiar]").forEach(function (boton) {
@@ -114,6 +156,7 @@
     pintarContador();
     iniciarMenu();
     iniciarAlerta();
+    iniciarCarrusel();
     iniciarCopiar();
   }
 

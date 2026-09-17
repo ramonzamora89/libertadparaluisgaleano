@@ -56,6 +56,24 @@ Clases opcionales:
 - `cronologia__item--hito` resalta un hecho clave con un punto rojo.
 - `cronologia__item--proximo` marca un hecho programado con un punto punteado. Cuando ocurra, quita la clase y reescribe el texto en pasado.
 
+### Agregar el logo de una organización aliada
+
+Los logos viven en un carrusel en `cpj-y-aliados/index.html` y `english/cpj-and-partners/index.html`.
+
+1. **Primero el permiso.** No se agrega un logo sin autorización de la organización. Anota abajo, en «Permisos de logos», quién lo autorizó y cuándo.
+2. Guarda el archivo en `assets/img/logos/` con nombre en minúsculas (`nombre-organizacion.svg`, o `.png` con fondo transparente). Los logos se muestran sobre fondo blanco, así que deben ser oscuros o a color.
+3. Agrega un `<li>` al final de la pista, en las dos páginas:
+   ```html
+   <li>
+     <a class="carrusel__logo" href="URL de la organización" target="_blank" rel="noopener">
+       <img src="../assets/img/logos/archivo.svg" alt="Nombre de la organización" width="200" height="80" loading="lazy">
+     </a>
+   </li>
+   ```
+   En la página en inglés la ruta es `../../assets/img/logos/`.
+4. El `alt` lleva el nombre de la organización, sin la palabra «logo».
+5. Las flechas del carrusel aparecen solas cuando hay más logos de los que caben; con pocos quedan ocultas.
+
 ### Actualizar la franja de alertas
 
 Está copiada en las 12 páginas, dentro de `<ul class="alerta__pista">`. El JS la duplica para el bucle, así que se escribe una sola vez por página. Para cambiarla en todas a la vez, usa un script de reemplazo y verifica después:
@@ -80,6 +98,21 @@ El contador está en `index.html` y `english/index.html`:
 ### Actualizar la fecha de «Última actualización»
 
 Está en el pie de las 12 páginas (`.pie__legal`) y en `sitemap.xml` (`<lastmod>`).
+
+## Permisos de logos
+
+| Organización | Archivo | Origen | Permiso |
+|---|---|---|---|
+| CPJ | `assets/img/logos/cpj.webp` (255×300) | Lo entregó Moncho | **Por registrar:** quién lo autorizó y cuándo |
+| Free Press | `assets/img/logos/free-press.webp` (300×300) | Lo entregó Moncho | **Por registrar** |
+| SIP | `assets/img/logos/sip.svg` | Lo entregó Moncho | **Por registrar** |
+
+Ninguna de las tres publica condiciones de uso de su logo. Free Press sí ofrece un kit de marca descargable (freepress.net/media-kit); el CPJ excluye las imágenes de su licencia Creative Commons y la SIP no publica nada. Si hace falta pedir permiso: press@cpj.org, tkarr@freepress.net y sipiapa.org/contacto.
+
+Versiones oficiales de mejor calidad, por si se quieren reemplazar:
+- CPJ horizontal en SVG: `cpj.org/wp-content/themes/cpj/client/src/images/cpj-logo-black-small.svg`.
+- Free Press horizontal en PNG con transparencia (1999×567), dentro del kit de marca. El archivo que se usa hoy viene de seeklogo y tiene fondo blanco, no transparente.
+- SIP en SVG, con versión en inglés: `en.sipiapa.org/css-custom/xpress/images/header-logo-en.svg`.
 
 ## Datos del caso y discrepancias entre fuentes
 
