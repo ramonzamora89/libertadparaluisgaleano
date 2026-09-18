@@ -20,7 +20,7 @@ Guía de trabajo para mantener el sitio. Para la estructura general, ver [README
 | `/por-que-importa/` | `/english/why-this-matters/` | Riesgo, patrón y quiénes piden su liberación |
 | `/actua/` | `/english/take-action/` | Pasos, botones para compartir, mensajes para copiar (ES y EN en ambas páginas) |
 | `/noticias/` | `/english/in-the-news/` | Tarjetas de prensa, de la más reciente a la más antigua |
-| `/cpj-y-aliados/` | `/english/cpj-and-partners/` | Comunicados del CPJ y la SIP, contacto de prensa |
+| `/cpj-y-aliados/` | `/english/cpj-and-partners/` | Comunicados del CPJ y la SIP, carrusel con los logos de las 15 organizaciones aliadas, contacto de prensa |
 
 ## Tareas frecuentes
 
@@ -61,8 +61,10 @@ Clases opcionales:
 Los logos viven en un carrusel en `cpj-y-aliados/index.html` y `english/cpj-and-partners/index.html`.
 
 1. **Primero el permiso.** No se agrega un logo sin autorización de la organización. Anota abajo, en «Permisos de logos», quién lo autorizó y cuándo.
-2. Guarda el archivo en `assets/img/logos/` con nombre en minúsculas (`nombre-organizacion.svg`, o `.png` con fondo transparente). Los logos se muestran sobre fondo blanco, así que deben ser oscuros o a color.
-3. Agrega un `<li>` al final de la pista, en las dos páginas:
+2. Guarda el archivo en `assets/img/logos/` con nombre en minúsculas y guiones (`nombre-organizacion.svg`). Formato: **SVG** cuando la organización lo publique, si no **WebP con transparencia**, de hasta 600×240 px.
+3. **Cuidado con las versiones en blanco.** Muchas organizaciones publican en su encabezado el logo en blanco, porque su sitio tiene fondo oscuro. El carrusel es de fondo blanco, así que ese archivo se ve vacío. Comprueba siempre el logo sobre blanco antes de darlo por bueno. Si solo existe en blanco, busca la versión oscura en su kit de marca o en Wikimedia Commons.
+4. **Que el logo se lea al tamaño real.** El carrusel muestra los logos a 130 px de alto con 20 px de padding, o sea unos 90 px útiles. Un logo cuadrado con el nombre en letra chica queda ilegible: prefiere el lockup horizontal.
+5. Agrega un `<li>` a la pista, en las dos páginas:
    ```html
    <li>
      <a class="carrusel__logo" href="URL de la organización" target="_blank" rel="noopener">
@@ -71,8 +73,10 @@ Los logos viven en un carrusel en `cpj-y-aliados/index.html` y `english/cpj-and-
    </li>
    ```
    En la página en inglés la ruta es `../../assets/img/logos/`.
-4. El `alt` lleva el nombre de la organización, sin la palabra «logo».
-5. Las flechas del carrusel aparecen solas cuando hay más logos de los que caben; con pocos quedan ocultas.
+6. `width` y `height` llevan las **dimensiones reales** del archivo, para que el navegador reserve el espacio y no haya salto de layout. Para un SVG, míralas con `rsvg-convert -h 200 archivo.svg -o /tmp/r.png && identify /tmp/r.png`, porque el `viewBox` no siempre coincide con los atributos.
+7. El `alt` lleva el nombre de la organización, sin la palabra «logo», traducido en cada idioma cuando la organización tiene nombre en español.
+8. Si la organización tiene sitio en español y en inglés (CPJ, SIP, RSF), cada página enlaza a la versión en su idioma.
+9. Las flechas del carrusel aparecen solas cuando hay más logos de los que caben.
 
 ### Actualizar la franja de alertas
 
@@ -101,18 +105,41 @@ Está en el pie de las 12 páginas (`.pie__legal`) y en `sitemap.xml` (`<lastmod
 
 ## Permisos de logos
 
-| Organización | Archivo | Origen | Permiso |
-|---|---|---|---|
-| CPJ | `assets/img/logos/cpj.webp` (255×300) | Lo entregó Moncho | **Por registrar:** quién lo autorizó y cuándo |
-| Free Press | `assets/img/logos/free-press.webp` (300×300) | Lo entregó Moncho | **Por registrar** |
-| SIP | `assets/img/logos/sip.svg` | Lo entregó Moncho | **Por registrar** |
+Moncho confirmó el 18/09/2026 que la campaña tiene la aprobación de las organizaciones para usar sus logos. **Falta registrar el detalle por organización** (quién lo autorizó, en qué fecha y por qué vía), por si alguna lo pide más adelante.
 
-Ninguna de las tres publica condiciones de uso de su logo. Free Press sí ofrece un kit de marca descargable (freepress.net/media-kit); el CPJ excluye las imágenes de su licencia Creative Commons y la SIP no publica nada. Si hace falta pedir permiso: press@cpj.org, tkarr@freepress.net y sipiapa.org/contacto.
+Las 15 organizaciones del carrusel, en el orden en que aparecen:
+
+| # | Organización | Archivo | Tamaño | Origen |
+|---|---|---|---|---|
+| 1 | CPJ | `cpj.webp` | 255×300 | Lo entregó Moncho |
+| 2 | SIP / IAPA | `sip.svg` | 179×65 | Lo entregó Moncho |
+| 3 | AFPC-USA | `afpc.webp` | 459×206 | Lo entregó Moncho (18/09/2026) |
+| 4 | First Amendment Coalition | `first-amendment-coalition.svg` | 265×60 | firstamendmentcoalition.org |
+| 5 | First Amendment Foundation | `first-amendment-foundation.webp` | 433×240 | floridafaf.org |
+| 6 | Free Press | `free-press.webp` | 300×300 | Lo entregó Moncho |
+| 7 | Freedom of the Press Foundation | `freedom-of-the-press-foundation.svg` | 564×85 | Wikimedia Commons |
+| 8 | The Media and Democracy Project | `media-and-democracy-project.webp` | 192×240 | mediaanddemocracyproject.org |
+| 9 | NAHJ | `nahj.webp` | 494×240 | nahj.org |
+| 10 | NPPA | `nppa.svg` | 113×31 | nppa.org |
+| 11 | PEN America | `pen-america.svg` | 149×55 | pen.org, recoloreado |
+| 12 | RTDNA | `rtdna.webp` | 600×190 | rtdna.org |
+| 13 | RSF | `rsf.svg` | 190×48 | rsf.org/en |
+| 14 | Society of Environmental Journalists | `sej.webp` | 200×200 | sej.org |
+| 15 | SPJ | `spj.webp` | 240×240 | spj.org |
+
+Tres archivos necesitaron trabajo extra, porque sus organizaciones solo publican el logo en blanco:
+
+- **Freedom of the Press Foundation:** su sitio solo ofrece la versión en blanco. Se usa la versión negra de Wikimedia Commons.
+- **SEJ:** el logo del encabezado es blanco. Se usa `sej.org/sites/default/files/SEJ-logo-blue-2018-200_6.jpg`, la versión azul.
+- **PEN America:** su SVG oficial es la variante en blanco (el grupo se llama literalmente `Pen_Box_white`). Se recoloreó a la variante para fondo claro: el globo queda rojo, «PEN AMERICA» en tinta oscura y el lema «The Freedom to Write» en rojo. **Si la organización prefiere su archivo original**, hay un JPG oficial sobre fondo blanco en Wikimedia Commons (`Pen_Box_tagline_lrg.jpg`).
 
 Versiones oficiales de mejor calidad, por si se quieren reemplazar:
-- CPJ horizontal en SVG: `cpj.org/wp-content/themes/cpj/client/src/images/cpj-logo-black-small.svg`.
-- Free Press horizontal en PNG con transparencia (1999×567), dentro del kit de marca. El archivo que se usa hoy viene de seeklogo y tiene fondo blanco, no transparente.
+- CPJ horizontal en SVG: `cpj.org/wp-content/themes/cpj/client/src/images/cpj-logo-black-small.svg`. El que se usa hoy es vertical.
+- Free Press horizontal en PNG con transparencia (1999×567), dentro del kit de marca (freepress.net/media-kit). El archivo actual viene de seeklogo y tiene fondo blanco, no transparente.
 - SIP en SVG, con versión en inglés: `en.sipiapa.org/css-custom/xpress/images/header-logo-en.svg`.
+- AFPC-USA: el archivo actual es un WebP de 459×206 y el nombre se lee bien, pero la línea de los dos dominios queda apretada. Si la organización tiene el vectorial (SVG, AI o EPS), conviene pedirlo.
+
+`sip.svg` se optimizó el 18/09/2026 de 102 KB a 76 KB (40 KB a 27 KB ya comprimido) redondeando las coordenadas de sus 95 paths a dos decimales. Sigue siendo el logo más pesado del carrusel: casi todo su peso es el sello con el globo y el anillo de texto convertido a curvas.
 
 ## Datos del caso y discrepancias entre fuentes
 
@@ -135,11 +162,12 @@ Revisado el 17/09/2026:
 
 - [ ] **Confirmar la fecha del asilo (17/06/2019)** con la familia o el abogado, o con un documento (recibo I-589 de USCIS). Hoy el sitio la publica atribuida a «información aportada a esta campaña».
 - [ ] **Foto de Luis** con permiso de uso y crédito, para la portada y las imágenes para compartir. Hoy la portada es solo tipográfica.
-- [ ] **Logo del CPJ:** confirmar si se puede usar. Hoy el CPJ aparece solo como texto con enlace.
+- [ ] **Registrar el detalle de los permisos de logos:** quién autorizó cada uno, cuándo y por qué vía. La aprobación existe (Moncho la confirmó el 18/09/2026), pero no está documentada organización por organización.
 - [ ] **Crédito del pie** («Con el respaldo del CPJ» / «Supported by CPJ»): confirmar la redacción con el CPJ.
 - [ ] **Petición o carta:** si existe, agregarla como llamado principal en Actúa y en la portada.
 - [ ] Confirmar la cuenta de X de *Café con Voz* (`@CafeconVozNi`, tomada de un tuit citado por Artículo 66).
 - [ ] Imágenes para compartir (`assets/img/compartir-*.png`): hoy son provisionales, generadas con Georgia y Arial. Reemplazarlas por una pieza diseñada, de 1200×630.
+- [ ] Limpieza menor: la regla `.carrusel__pie` de `assets/css/style.css` quedó sin uso al quitarse la nota al pie del carrusel. Se conserva por si vuelve a hacer falta una nota bajo los logos.
 
 ## Publicación (GitHub Pages)
 
