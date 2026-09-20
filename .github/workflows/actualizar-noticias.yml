@@ -1,0 +1,72 @@
+name: Actualizar noticias
+
+# Lee el Google Sheet de cobertura de prensa y, si cambió algo, reescribe las
+# tarjetas del sitio y hace commit. La dirección del Sheet publicado como CSV
+# va en el secreto del repositorio NOTICIAS_SHEET_URL.
+
+on:
+  schedule:
+    # Todos los días a las 12:00 UTC (6:00 en Nicaragua, 8:00 en Miami).
+    - cron: '0 12 * * *'
+  workflow_dispatch:   # permite correrlo a mano desde la pestaña Actions
+
+# Un solo trabajo a la vez: dos commits simultáneos se pisarían.
+concurrency:
+  group: actualizar-noticias
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # para hacer commit
+      pages: write      # para pedir el build de GitHub Pages
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      # Mientras no exista el secreto, el flujo no hace nada en vez de fallar
+      # todos los días. Los pasos para crearlo están en PROJECT.md.
+      - name: ¿Está configurado el Sheet?
+        id: sheet
+        env:
+          NOTICIAS_SHEET_URL: ${{ secrets.NOTICIAS_SHEET_URL }}
+        run: |
+          if [ -z "$NOTICIAS_SHEET_URL" ]; then
+            echo "Falta el secreto NOTICIAS_SHEET_URL. No hay nada que hacer."
+            echo "hay=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "hay=sí" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generar las tarjetas desde el Google Sheet
+        if: steps.sheet.outputs.hay == 'sí'
+        env:
+          NOTICIAS_SHEET_URL: ${{ secrets.NOTICIAS_SHEET_URL }}
+        run: python3 scripts/actualizar_noticias.py
+
+      - name: Hacer commit si cambió algo
+        id: commit
+        if: steps.sheet.outputs.hay == 'sí'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/noticias.json sitemap.xml '*.html'
+          if git diff --staged --quiet; then
+            echo "Sin novedades en el Sheet."
+            echo "cambios=no" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Actualiza las noticias desde el Google Sheet"
+            git push
+            echo "cambios=sí" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Los push hechos con GITHUB_TOKEN no siempre disparan el rebuild de
+      # Pages, así que lo pedimos a mano. Si falla, el commit ya quedó hecho.
+      - name: Pedir el rebuild de GitHub Pages
+        if: steps.commit.outputs.cambios == 'sí'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds"

@@ -26,19 +26,84 @@ Guía de trabajo para mantener el sitio. Para la estructura general, ver [README
 
 ### Agregar una noticia
 
-La cobertura está en **tres lugares por idioma**: `noticias/` (todas), la portada (solo las 3 más recientes) y sus pares en inglés.
+La cobertura **ya no se escribe a mano**. Sale de un Google Sheet y la escribe
+`scripts/actualizar_noticias.py` en los cuatro lugares donde aparece:
+`noticias/` y `english/in-the-news/` (todas) y las dos portadas (las 3 más
+recientes). El bloque generado va entre `<!-- noticias:inicio -->` y
+`<!-- noticias:fin -->`; **fuera de esos marcadores el script no toca nada**.
 
-1. Copia una tarjeta `<li class="tarjeta">` al **inicio** de la lista en `noticias/index.html`:
-   ```html
-   <li class="tarjeta">
-     <p class="tarjeta__medio">Medio</p>
-     <h2 class="tarjeta__titulo"><a href="URL" hreflang="es" target="_blank" rel="noopener">Titular exacto</a></h2>
-     <p class="tarjeta__meta"><time datetime="2026-09-18">18 de septiembre de 2026</time> · Autor<span class="tarjeta__idioma" title="Idioma">ES</span></p>
-   </li>
-   ```
-2. Haz lo mismo en `english/in-the-news/index.html`, con la fecha en inglés (`September 18, 2026`) y `title="Language"`. El titular y el medio van en su idioma original.
-3. En `index.html` y `english/index.html` (sección «En las noticias»), la lista usa `<h3>` en vez de `<h2>`: agrega la tarjeta nueva arriba y borra la última para que queden 3.
-4. Revisa que el enlace abra **la nota correcta**. freedomformario.com tenía tarjetas que apuntaban a notas de otros medios.
+**Para agregar una noticia:** una fila nueva en el Sheet. GitHub Actions lo lee
+cada día a las 12:00 UTC y hace commit solo si algo cambió. Para que salga ya,
+corre el flujo a mano en la pestaña **Actions → Actualizar noticias → Run
+workflow**.
+
+Columnas del Sheet (el orden no importa; `Autor` y `Publicar` son opcionales):
+
+| Columna | Qué va | Ejemplo |
+|---|---|---|
+| `Fecha` | la fecha de publicación de la nota | `2026-09-17` |
+| `Medio` | el nombre del medio, como lo usa el medio | `EL PAÍS English` |
+| `Titular` | el titular exacto, **en su idioma original** | `'I fear for his safety'…` |
+| `Enlace` | la URL de la nota | `https://…` |
+| `Autor` | la firma; vacío si la nota no lleva | `Abel Fernández` |
+| `Idioma` | `ES` o `EN`, el idioma **de la nota**, no el de la página | `EN` |
+| `Publicar` | `no` esconde la fila sin borrarla; vacío la publica | |
+
+El titular y el medio se muestran en su idioma original en las dos versiones
+del sitio, igual que antes. Lo único que cambia entre idiomas es el formato de
+la fecha y la etiqueta de la marca de idioma.
+
+Las noticias se ordenan de la más reciente a la más antigua. **Dentro de un
+mismo día manda el orden de las filas del Sheet**, así que si dos notas son del
+mismo día y quieres una arriba, súbela en el Sheet.
+
+Filas sin `Medio`, `Titular`, `Enlace` o `Fecha` válidos se omiten con un aviso
+en el registro del flujo. Si el Sheet no responde o no deja ninguna fila
+válida, el script aborta **sin tocar el sitio**: más vale cobertura vieja que
+un sitio vacío.
+
+#### Probar en local
+
+```sh
+python3 scripts/actualizar_noticias.py --csv scripts/noticias-semilla.csv
+```
+
+`scripts/noticias-semilla.csv` tiene las 7 notas con las que arrancó el sitio y
+sirve de plantilla: copia su contenido al Sheet nuevo para no empezar en blanco.
+Con `--sin-pie` no se tocan las fechas de «Última actualización» ni el sitemap.
+
+#### Conectar el Sheet
+
+1. En el Sheet: **Archivo → Compartir → Publicar en la web**, hoja de noticias,
+   formato **CSV**. Copia la dirección que te da.
+2. En GitHub: **Settings → Secrets and variables → Actions → New repository
+   secret**, nombre `NOTICIAS_SHEET_URL`, valor esa dirección.
+3. Publicar en la web deja el CSV accesible para cualquiera que tenga el
+   enlace. No pongas en ese Sheet nada que no sea publicable.
+
+#### Al revisar
+
+- Que el enlace abra **la nota correcta**. freedomformario.com tenía tarjetas
+  que apuntaban a notas de otros medios.
+- Que `data/noticias.json` (el respaldo que deja el script) y las páginas digan
+  lo mismo. Si no coinciden, el script quedó a medias.
+
+#### Si hace falta escribir una tarjeta a mano
+
+Solo tiene sentido si el flujo está caído. El script la borrará en la siguiente
+corrida, así que pásala también al Sheet.
+
+```html
+<li class="tarjeta">
+  <p class="tarjeta__medio">Medio</p>
+  <h2 class="tarjeta__titulo"><a href="URL" hreflang="es" target="_blank" rel="noopener">Titular exacto</a></h2>
+  <p class="tarjeta__meta"><time datetime="2026-09-18">18 de septiembre de 2026</time> · Autor<span class="tarjeta__idioma" title="Idioma">ES</span></p>
+</li>
+```
+
+En las páginas en inglés la fecha va en inglés (`September 18, 2026`) y la
+marca de idioma lleva `title="Language"`. En las portadas el titular usa `<h3>`
+en vez de `<h2>`, porque va bajo el `<h2>` de la sección.
 
 ### Agregar un hecho a la cronología
 
@@ -102,6 +167,8 @@ El contador está en `index.html` y `english/index.html`:
 ### Actualizar la fecha de «Última actualización»
 
 Está en el pie de las 12 páginas (`.pie__legal`) y en `sitemap.xml` (`<lastmod>`).
+`scripts/actualizar_noticias.py` las refresca solo cuando cambian las noticias,
+así que después de editar a mano cualquier otra cosa hay que moverlas aparte.
 
 ## Permisos de logos
 
@@ -160,6 +227,7 @@ Revisado el 17/09/2026:
 
 ## Pendientes (TODO)
 
+- [ ] **Crear el Google Sheet de noticias y cargar el secreto `NOTICIAS_SHEET_URL`.** Hasta que exista, el flujo diario falla y la cobertura queda congelada en las 7 notas de `scripts/noticias-semilla.csv`, que ya están en el sitio. Los pasos están en [Conectar el Sheet](#conectar-el-sheet).
 - [ ] **Confirmar la fecha del asilo (17/06/2019)** con la familia o el abogado, o con un documento (recibo I-589 de USCIS). Hoy el sitio la publica atribuida a «información aportada a esta campaña».
 - [ ] **Foto de Luis** con permiso de uso y crédito, para la portada y las imágenes para compartir. Hoy la portada es solo tipográfica.
 - [ ] **Registrar el detalle de los permisos de logos:** quién autorizó cada uno, cuándo y por qué vía. La aprobación existe (Moncho la confirmó el 18/09/2026), pero no está documentada organización por organización.

@@ -23,10 +23,16 @@ assets/css/fonts.css            Tipografías autoalojadas
 assets/js/site.js               Contador, menú, franja de alertas, botones de copiar
 assets/fonts/                   Source Sans 3 y Source Serif 4 (woff2, licencia OFL)
 assets/img/                     favicon.svg, compartir-es.png, compartir-en.png
+data/noticias.json              Respaldo de la cobertura de prensa
+scripts/actualizar_noticias.py  Genera las tarjetas de prensa desde un Google Sheet
+scripts/noticias-semilla.csv    Las 7 notas iniciales; plantilla del Sheet
+.github/workflows/              Corre el script todos los días
 CNAME  .nojekyll  robots.txt  sitemap.xml
 ```
 
 Todo el texto está directamente en los archivos `.html`. No hay plantillas ni base de datos: el encabezado, la franja de alertas y el pie se repiten en cada página. Las tipografías están autoalojadas, así que el sitio no hace peticiones a servidores externos.
+
+La única excepción son las tarjetas de prensa, que salen de un Google Sheet. No cambia nada para quien visita el sitio: un script escribe el HTML antes de publicarlo y las páginas siguen siendo estáticas y legibles sin JavaScript. Ver [PROJECT.md](PROJECT.md#agregar-una-noticia).
 
 ## Ver el sitio en local
 
