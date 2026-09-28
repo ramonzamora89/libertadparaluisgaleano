@@ -235,7 +235,7 @@ Revisado el 17/09/2026:
 - [ ] **Crédito del pie** («Con el respaldo del CPJ» / «Supported by CPJ»): confirmar la redacción con el CPJ.
 - [ ] **Petición o carta:** si existe, agregarla como llamado principal en Actúa y en la portada.
 - [ ] Confirmar la cuenta de X de *Café con Voz* (`@CafeconVozNi`, tomada de un tuit citado por Artículo 66).
-- [ ] Imágenes para compartir (`assets/img/compartir-*.png`): hoy son provisionales, generadas con Georgia y Arial. Reemplazarlas por una pieza diseñada, de 1200×630.
+- [ ] Imágenes para compartir (`assets/img/compartir-*.png`): hoy son provisionales, generadas con Georgia y Arial. Reemplazarlas por una pieza diseñada, de 1200×630. Mientras tanto se regeneran con `python3 scripts/generar_compartir.py`; después de regenerarlas hay que subir el `?v=` del `og:image` en las 12 páginas, o las redes siguen mostrando la vieja por caché.
 - [ ] Limpieza menor: la regla `.carrusel__pie` de `assets/css/style.css` quedó sin uso al quitarse la nota al pie del carrusel. Se conserva por si vuelve a hacer falta una nota bajo los logos.
 
 ## Publicación (GitHub Pages)
