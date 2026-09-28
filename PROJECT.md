@@ -215,7 +215,8 @@ Revisado el 17/09/2026:
 | Dato | Lo que dice el sitio | Detalle |
 |---|---|---|
 | Fecha y lugar de detención | 14/09/2026, por la mañana, Orlando (FL) | CPJ, EL PAÍS, France 24, Confidencial, Infobae. Artículo 66 dice Miami. |
-| Centro de detención | «bajo custodia de ICE en Florida» | CPJ (citando a La Prensa) y EL PAÍS dicen Baker (Sanderson). The Guardian dice que el miércoles 16 estaba en Krome (Miami). **Por confirmar.** |
+| Centro de detención | «bajo custodia de ICE en Florida» | CPJ (citando a La Prensa) y EL PAÍS dicen Baker (Sanderson). The Guardian dice que el miércoles 16 estaba en Krome (Miami). Infobae y Univision (26/09) confirman que salió de Krome. |
+| Liberación | 26/09/2026, de madrugada, bajo fianza de 10.000 dólares; **11 días** detenido | Infobae y Univision. Infobae titula «doce días». El sitio dice 11 por decisión de Moncho (27/09/2026): del lunes 14 por la mañana a las 2:00 del sábado 26 van 11 días completos. |
 | Plataforma | «aplicación de transporte» | La mayoría dice Uber; The Guardian dice Lyft. |
 | Entrada a EE. UU. | 21/12/2018 | EL PAÍS (y el DHS). The Guardian dice que huyó «días después» del allanamiento. Confirmado por un mensaje recibido el 17/09/2026. |
 | Orden de captura | Sin fecha | Las fuentes no coinciden en si fue antes o después de su salida. |
