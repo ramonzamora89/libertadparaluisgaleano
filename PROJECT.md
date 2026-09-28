@@ -2,12 +2,22 @@
 
 Guía de trabajo para mantener el sitio. Para la estructura general, ver [README.md](README.md).
 
+## Estado del caso
+
+Al 27/09/2026:
+
+- **Luis está en libertad.** ICE lo detuvo el 14/09/2026 en Orlando y salió bajo fianza de 10.000 dólares la madrugada del 26/09/2026, del centro de detención de Krome (Miami). Fuentes: Infobae y Univision.
+- **El contador está congelado en 11 días**, con el rótulo «Estuvo detenido injustamente» / «Was unjustly detained». Ya no cuenta.
+- **Su proceso migratorio sigue abierto.** La audiencia del 2/10/2026 sigue en la cronología como hecho programado (`cronologia__item--proximo`).
+- **El nombre de la campaña se mantiene** («Libertad para Luis Galeano», #LibertadParaLuisGaleano, #FreeLuisGaleano): es la marca, el dominio y el hashtag.
+- **Pendiente:** Actúa todavía habla de un Luis detenido. Ver [Pendientes](#pendientes-todo).
+
 ## Reglas
 
 1. **Los dos idiomas dicen lo mismo.** Todo cambio de contenido se hace en la página en español y en su par en inglés, en el mismo commit. Si no, el sitio se contradice a sí mismo.
-2. **El contador, la cronología y la franja de alertas no se contradicen.** Si cambia la situación de Luis (traslado, audiencia, liberación, deportación), se actualizan los tres.
+2. **El contador, la cronología, la franja de alertas y las imágenes para compartir no se contradicen.** Si cambia la situación de Luis (traslado, audiencia, liberación, deportación), se actualizan todos, junto con el resumen de la portada, el pie de las 12 páginas y las descripciones (`description`, `og:description`).
 3. **Solo hechos verificables, con fuente.** Cada entrada de la cronología y cada dato del caso cita al menos una fuente. Se prefieren el CPJ, otras organizaciones y la prensa reconocida, no las redes sociales. Frases cortas, con fecha.
-4. **Privacidad y seguridad.** No se nombra a familiares de Luis ni se publican datos de ubicación que no sean ya públicos y necesarios.
+4. **Privacidad y seguridad.** No se nombra a familiares de Luis ni se publican datos de ubicación que no sean ya públicos y necesarios. **Lo que la campaña sabe por la familia o por vías internas y no está publicado no va al sitio ni al repo**, que es público: ni en páginas, ni en PROJECT.md, ni en commits. Si un dato así explica una decisión, se anota solo la decisión.
 5. **Colores y medidas solo como variables** en `:root` (`assets/css/style.css`). Para texto rojo chico se usa `--rojo-texto` sobre fondo claro y `--rojo-claro` sobre fondo negro, porque el rojo del CPJ (`--rojo`) no alcanza el contraste AA para texto chico.
 6. **Git:** commits en español que explican el porqué. Solo se hace commit o push cuando Moncho lo confirma.
 
@@ -151,18 +161,29 @@ Está copiada en las 12 páginas, dentro de `<ul class="alerta__pista">`. El JS 
 grep -c "texto nuevo" index.html */index.html english/*/index.html english/index.html
 ```
 
-### Congelar o cambiar el contador
+### El contador
 
-El contador está en `index.html` y `english/index.html`:
+El contador está en `index.html` y `english/index.html`. **Desde el 27/09/2026 está congelado** en 11 días, sin el atributo `data-contador`:
 
 ```html
-<div class="contador" data-contador data-desde="2026-09-14">
+<div class="contador">
+  <p class="contador__rotulo">Estuvo detenido injustamente</p>
   ...
-  <span class="dias-numero">3</span>
+  <span class="dias-numero">11</span>
 ```
 
-- `site.js` cuenta los días de calendario desde `data-desde`. El número escrito en el HTML es el respaldo si el JavaScript no carga; conviene actualizarlo de vez en cuando.
-- **Si Luis es liberado:** escribe la cifra final en `.dias-numero`, quita el atributo `data-contador` y cambia el rótulo («Pasó N días detenido» / «Spent N days in detention») y la nota. Actualiza también la franja, la cronología y el resumen del caso.
+- `site.js` solo cuenta los elementos con `data-contador`, desde la fecha de `data-desde`. Sin ese atributo, se muestra el número escrito en el HTML.
+- Para volver a activarlo (por ejemplo, si lo detienen de nuevo): agrega `data-contador data-desde="AAAA-MM-DD"` al `<div>`, cambia el rótulo y la nota, y actualiza la franja, la cronología, el resumen de la portada, el pie y las imágenes para compartir.
+
+### Regenerar las imágenes para compartir
+
+Son las que aparecen al compartir el sitio en WhatsApp, X, Facebook, etc. (`og:image`): `assets/img/compartir-es.png` y `compartir-en.png`, de 1200×630.
+
+1. Edita `TEXTOS` en `scripts/generar_compartir.py` y corre `python3 scripts/generar_compartir.py`.
+2. Mira las dos imágenes: que el título no toque el borde derecho.
+3. **Sube el número de `?v=`** en el `og:image` de las 12 páginas (hoy `?v=2`). Las redes guardan la imagen en caché por URL: sin ese cambio siguen mostrando la vieja durante días. Los chats donde el enlace ya se compartió no se actualizan; en Facebook se puede forzar desde developers.facebook.com/tools/debug («Volver a extraer»).
+
+Deben decir lo mismo que el contador y la franja. Tras la liberación, la vista previa siguió diciendo «Bajo custodia» hasta que se regeneraron (27/09/2026).
 
 ### Actualizar la fecha de «Última actualización»
 
@@ -210,7 +231,7 @@ Versiones oficiales de mejor calidad, por si se quieren reemplazar:
 
 ## Datos del caso y discrepancias entre fuentes
 
-Revisado el 17/09/2026:
+Revisado el 17/09/2026; liberación agregada el 27/09/2026:
 
 | Dato | Lo que dice el sitio | Detalle |
 |---|---|---|
@@ -228,14 +249,16 @@ Revisado el 17/09/2026:
 
 ## Pendientes (TODO)
 
-- [ ] **Crear el Google Sheet de noticias y cargar el secreto `NOTICIAS_SHEET_URL`.** Hasta que exista, el flujo diario falla y la cobertura queda congelada en las 7 notas de `scripts/noticias-semilla.csv`, que ya están en el sitio. Los pasos están en [Conectar el Sheet](#conectar-el-sheet).
+- [ ] **Reescribir Actúa** (`actua/` y `english/take-action/`): los botones para compartir y los mensajes para copiar todavía dicen «Hoy está detenido por ICE» / «Now ICE has detained him». El tono nuevo: agradecimiento y libertad de prensa, sin afirmar nada sobre el resultado de su caso migratorio que no esté publicado. Revisar también el título de `english/cpj-and-partners/` («Organizations calling for his release») y el enfoque de Por qué importa.
+- [ ] **Crear el Google Sheet de noticias y cargar el secreto `NOTICIAS_SHEET_URL`.** Hasta que exista, el flujo diario no hace nada y la cobertura sale de `scripts/noticias-semilla.csv` (hoy 9 notas, con las de Infobae y Univision del 26/09), corriendo el script a mano. **Al crear el Sheet, copia todas las filas del CSV**, o el flujo borrará del sitio las que falten. Los pasos están en [Conectar el Sheet](#conectar-el-sheet).
+- [ ] **Después del 2/10/2026:** actualizar la entrada de la audiencia en la cronología (quitar `cronologia__item--proximo` y escribirla en pasado, con fuente), la franja y la ficha de la portada.
 - [ ] **Confirmar la fecha del asilo (17/06/2019)** con la familia o el abogado, o con un documento (recibo I-589 de USCIS). Hoy el sitio la publica atribuida a «información aportada a esta campaña».
 - [ ] **Foto de Luis** con permiso de uso y crédito, para la portada y las imágenes para compartir. Hoy la portada es solo tipográfica.
 - [ ] **Registrar el detalle de los permisos de logos:** quién autorizó cada uno, cuándo y por qué vía. La aprobación existe (Moncho la confirmó el 18/09/2026), pero no está documentada organización por organización.
 - [ ] **Crédito del pie** («Con el respaldo del CPJ» / «Supported by CPJ»): confirmar la redacción con el CPJ.
 - [ ] **Petición o carta:** si existe, agregarla como llamado principal en Actúa y en la portada.
 - [ ] Confirmar la cuenta de X de *Café con Voz* (`@CafeconVozNi`, tomada de un tuit citado por Artículo 66).
-- [ ] Imágenes para compartir (`assets/img/compartir-*.png`): hoy son provisionales, generadas con Georgia y Arial. Reemplazarlas por una pieza diseñada, de 1200×630. Mientras tanto se regeneran con `python3 scripts/generar_compartir.py`; después de regenerarlas hay que subir el `?v=` del `og:image` en las 12 páginas, o las redes siguen mostrando la vieja por caché.
+- [ ] Imágenes para compartir: hoy son provisionales, generadas con Georgia y Arial. Reemplazarlas por una pieza diseñada, de 1200×630. Ver [Regenerar las imágenes para compartir](#regenerar-las-imágenes-para-compartir).
 - [ ] Limpieza menor: la regla `.carrusel__pie` de `assets/css/style.css` quedó sin uso al quitarse la nota al pie del carrusel. Se conserva por si vuelve a hacer falta una nota bajo los logos.
 
 ## Publicación (GitHub Pages)

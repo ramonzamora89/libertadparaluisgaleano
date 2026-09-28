@@ -25,7 +25,8 @@ assets/fonts/                   Source Sans 3 y Source Serif 4 (woff2, licencia 
 assets/img/                     favicon.svg, compartir-es.png, compartir-en.png
 data/noticias.json              Respaldo de la cobertura de prensa
 scripts/actualizar_noticias.py  Genera las tarjetas de prensa desde un Google Sheet
-scripts/noticias-semilla.csv    Las 7 notas iniciales; plantilla del Sheet
+scripts/noticias-semilla.csv    Las notas cargadas a mano; plantilla del Sheet
+scripts/generar_compartir.py    Genera las imágenes para compartir (og:image)
 .github/workflows/              Corre el script todos los días
 CNAME  .nojekyll  robots.txt  sitemap.xml
 ```
